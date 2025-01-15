@@ -11,9 +11,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { auth } from "@/auth";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 
-const Header = ({ session }: { session: Session }) => {
+const Header = async () => {
+  const session = await auth();
+  if (!session) redirect("/sign-in");
+
   return (
     <header className="my-10 flex items-center justify-between gap-5">
       <Link href="/">

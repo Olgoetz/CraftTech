@@ -13,7 +13,7 @@ const chivoMono = Chivo_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CraftTech",
+  title: "Craft.tech",
   description: "Aufträge für Handwerker",
 };
 

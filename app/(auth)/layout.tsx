@@ -4,9 +4,9 @@ import { redirect } from "next/navigation";
 import React, { ReactNode } from "react";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
-  const session = await auth();
+  // const session = await auth();
 
-  if (session) redirect("/");
+  // if (session) redirect("/");
   return (
     <main className="auth-container">
       <section className="auth-form">
@@ -14,11 +14,11 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           <div className="flex gap-4 items-center">
             <Image
               src="/rotes_logo.png"
-              alt="CraftTech Logo"
+              alt="Craft.tech Logo"
               width={40}
               height={40}
             />
-            <h1 className="text-3xl font-semibold">CraftTech</h1>
+            <h1 className="text-3xl font-semibold">Craft.tech</h1>
           </div>
           <div>{children}</div>
         </div>
