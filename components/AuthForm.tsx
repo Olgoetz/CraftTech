@@ -1,13 +1,6 @@
-import Link from "next/link";
-
 import AuthWithProvider from "./AuthWithProvider";
 
-interface Props {
-  type: "SIGN_IN" | "SIGN_UP";
-}
-
-const AuthForm = ({ type }: Props) => {
-  const isSignIn = type === "SIGN_IN";
+const AuthForm = () => {
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-xl font-semibold">Willkommen bei CraftTech</h1>

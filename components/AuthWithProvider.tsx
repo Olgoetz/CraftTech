@@ -1,6 +1,5 @@
 import { signIn } from "@/auth";
 import { Button } from "./ui/button";
-import { ReactNode } from "react";
 import { capitalized } from "@/lib/utils";
 import { Input } from "./ui/input";
 import Image from "next/image";

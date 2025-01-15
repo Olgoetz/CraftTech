@@ -1,5 +1,3 @@
-import { auth } from "@/auth";
-import { Session } from "next-auth";
 import React from "react";
 
 const Page = async () => {
