@@ -12,6 +12,7 @@ import {
 
 import { auth } from "@/auth";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import { redirect } from "next/navigation";
 
 const Header = async () => {
   const session = await auth();

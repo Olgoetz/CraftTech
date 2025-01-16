@@ -27,7 +27,7 @@ const AuthForm = () => {
                       {...field}
                     />
                   </FormControl>
-             
+
                   <FormMessage />
                 </FormItem>
               )}
