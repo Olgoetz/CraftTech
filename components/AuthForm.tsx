@@ -3,7 +3,7 @@ import AuthWithProvider from "./AuthWithProvider";
 const AuthForm = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold">Willkommen bei CraftTech</h1>
+      <h1 className="text-xl font-semibold">Willkommen bei Craft.tech</h1>
       <p>Melde dich an, um fortzufahren</p>
       {/* <Form {...form}>
         <form
