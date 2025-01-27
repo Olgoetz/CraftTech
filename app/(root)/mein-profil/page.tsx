@@ -1,20 +1,22 @@
 import React from "react";
 import { auth } from "@/auth";
+import { User } from "next-auth";
+import Profile from "@/components/Profile";
 
 const Page = async () => {
   const session = await auth();
 
+  if (!session) return;
+
+  const user: User = session.user as User;
+
+  // const confirmations = await getConfirmations(user.id as string);
+  // const { dataPrivacy, dataProcessing } = confirmations;
+
   return (
     <main>
-      <h1 className="text-3xl">Mein Profil</h1>
-      <div className="mt-10 flex flex-col rounded-md bg-gray-100">
-        <div className="rounded-t-md bg-gray-200 p-4 font-bold">
-          Current Session
-        </div>
-        <pre className="whitespace-pre-wrap break-all px-4 py-6">
-          {JSON.stringify(session, null, 2)}
-        </pre>
-      </div>
+      <h1 className="text-4xl font-bold">Mein Profil</h1>
+      <Profile />
     </main>
   );
 };

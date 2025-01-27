@@ -11,3 +11,8 @@ export const FIELD_TYPES = {
   email: "email",
   password: "password",
 };
+
+export const CONFIRMATIONS = {
+  dataPrivacy: "Datenschutz",
+  dataProcessing: "Datenverarbeitung",
+};

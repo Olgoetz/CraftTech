@@ -31,7 +31,7 @@ const AuthWithProvider = ({ provider }: Props) => {
               />
 
               <div className="w-[200px] text-left">
-                Einloggen mit {capitalized(provider)}
+                Link zusenden mit {capitalized(provider)}
               </div>
             </div>
           </Button>

@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   return (
-    <main className="auth-container">
+    <main className="auth-container ">
       <section className="auth-form">
         <div className="auth-box">
           <div className="flex gap-4 items-center">

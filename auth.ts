@@ -8,8 +8,8 @@ import {
   sessions,
   users,
   verificationTokens,
-} from "./drizzle/schema";
-import { db } from "./drizzle/drizzle";
+} from "./database/schema";
+import { db } from "./database/drizzle";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db, {

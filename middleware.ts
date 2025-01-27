@@ -1,20 +1,27 @@
 import { auth } from "@/auth";
+import { NextResponse } from "next/server";
+import { publicRoutes } from "./routes";
 
 export default auth((req) => {
   console.log("Middleware invoked for", req.nextUrl.pathname);
   const isLoggedIn = !!req.auth;
   console.log("User isLoggedIn status: ", isLoggedIn);
+
+  // Skip auth check for public routes
+  const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
+  if (isPublicRoute) {
+    return;
+  }
+
   const isAuthRoute = req.nextUrl.pathname.startsWith("/api/auth");
   if (isAuthRoute) {
     return;
   }
   if (!isLoggedIn && req.nextUrl.pathname !== "/sign-in") {
-    const newUrl = new URL("/sign-in", req.nextUrl.origin);
-    return Response.redirect(newUrl);
+    return NextResponse.redirect(new URL("/sign-in", req.nextUrl.origin));
   }
   if (isLoggedIn && req.nextUrl.pathname === "/sign-in") {
-    const newUrl = new URL("/", req.nextUrl.origin);
-    return Response.redirect(newUrl);
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
 });
 

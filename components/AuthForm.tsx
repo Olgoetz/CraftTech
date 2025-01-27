@@ -1,8 +1,9 @@
+import Link from "next/link";
 import AuthWithProvider from "./AuthWithProvider";
 
 const AuthForm = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4  w-[320px] mx-auto">
       <h1 className="text-xl font-semibold">Willkommen bei Craft.tech</h1>
       <p>Melde dich an, um fortzufahren</p>
       {/* <Form {...form}>
@@ -53,11 +54,29 @@ const AuthForm = () => {
         </div>
         <div className="relative flex justify-center text-sm">
           <span className="bg-background px-2 text-muted-foreground">
-            Oder nutze
+            Oder nutze deine Email Adresse
           </span>
         </div>
       </div>
       <AuthWithProvider provider="resend" />
+
+      <p className="text-xs text-center">
+        Mit Ihrer Registierung akzeptieren Sie unsere
+        <Link href="/datenschutz" className="text-blue-700">
+          {" "}
+          Datenschutzbestimmungen
+        </Link>
+        ,
+        <Link href="/agbs" className="text-blue-700">
+          {" "}
+          AGBs
+        </Link>{" "}
+        und
+        <Link href="cookie-richtlinien" className="text-blue-700">
+          {" "}
+          Cookie-Richtlinien
+        </Link>
+      </p>
 
       {/* <p className="text-sm text-center font-medium">
         {isSignIn ? "Noch keinen Account?" : "Bereits einen Account?"}{" "}

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Chivo, Chivo_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
 
 const chivo = Chivo({
   variable: "--font-chivo",
@@ -25,7 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${chivo.variable} ${chivoMono.variable} antialiased`}>
-        {children}
+        <SessionProvider>
+          {children}
+          <Toaster richColors theme="light" />
+        </SessionProvider>
       </body>
     </html>
   );
