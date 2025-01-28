@@ -14,11 +14,11 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 //   onUploadComplete: (key: string, value: string) => void;
 // }
 
-const FormSchema = z.object({
-  dob: z.date({
-    required_error: "A date of birth is required.",
-  }),
-});
+// const FormSchema = z.object({
+//   dob: z.date({
+//     required_error: "A date of birth is required.",
+//   }),
+// });
 
 export function FileUploader() {
   const [files, setFiles] = useState<File[]>([]);
