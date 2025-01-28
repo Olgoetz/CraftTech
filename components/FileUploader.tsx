@@ -6,9 +6,9 @@ import { z } from "zod";
 import { LoaderIcon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "./ui/card";
 
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+// import { zodResolver } from "@hookform/resolvers/zod";
 
 // interface FileUploaderProps {
 //   onUploadComplete: (key: string, value: string) => void;
@@ -24,9 +24,9 @@ export function FileUploader() {
   const [files, setFiles] = useState<File[]>([]);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string>();
   const waitor = (ms: number) => new Promise((res) => setTimeout(res, ms));
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
+  // const form = useForm<z.infer<typeof FormSchema>>({
+  //   resolver: zodResolver(FormSchema),
+  // });
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
     setFiles(acceptedFiles);
@@ -43,9 +43,9 @@ export function FileUploader() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log(values);
-  }
+  // function onSubmit(values: z.infer<typeof FormSchema>) {
+  //   console.log(values);
+  // }
 
   return (
     <div {...getRootProps()}>

@@ -1,6 +1,6 @@
 import React from "react";
 import { auth } from "@/auth";
-import { User } from "next-auth";
+
 import Profile from "@/components/Profile";
 
 const Page = async () => {
@@ -8,7 +8,7 @@ const Page = async () => {
 
   if (!session) return;
 
-  const user: User = session.user as User;
+  //const user: User = session.user as User;
 
   // const confirmations = await getConfirmations(user.id as string);
   // const { dataPrivacy, dataProcessing } = confirmations;

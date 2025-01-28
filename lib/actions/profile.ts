@@ -3,7 +3,6 @@ import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
 import { confirmations } from "@/database/schema";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
 
 export const getConfirmations = async (userId: string) => {
   const result = await db
@@ -34,10 +33,10 @@ export const createOrUpdateConfirmations = async (
   // });
 
   try {
-    const result = await db
+    await db
       .insert(confirmations)
       .values({
-        userId: session.user?.id!,
+        userId: session.user?.id as string,
         dataPrivacy,
         dataProcessing,
         updatedAt: new Date(), // Update `updatedAt` on conflict

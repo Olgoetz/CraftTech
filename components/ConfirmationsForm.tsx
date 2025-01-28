@@ -55,12 +55,12 @@ const ConfirmationsForm = (confirmations: ConfirmationsProps) => {
           onSubmit={form.handleSubmit(handleOnSubmit)}
           className="space-y-4 mb"
         >
-          <FormField
+          {/* <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                {/* <div className="space-x-2 flex items-center">
+                <div className="space-x-2 flex items-center">
                     <FormControl>
                       <Checkbox
                         id={key}
@@ -75,10 +75,10 @@ const ConfirmationsForm = (confirmations: ConfirmationsProps) => {
                       {label}
                     </FormLabel>
                   </div>
-                  <FormMessage /> */}
+                  <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           {Object.entries(CONFIRMATIONS).map(([key, label]) => (
             <FormField

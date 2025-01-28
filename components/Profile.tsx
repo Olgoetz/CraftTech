@@ -1,6 +1,6 @@
 "use client";
-import { Checkbox } from "./ui/checkbox";
-import React, { useEffect, useState } from "react";
+
+import React, { useState } from "react";
 import debounce from "debounce";
 import {
   FormField,
@@ -23,19 +23,13 @@ import { useSession } from "next-auth/react";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { getCity } from "@/lib/openPlzApi";
-import {
-  CircleCheckIcon,
-  Contact2,
-  FileIcon,
-  LogInIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { Contact2, FileIcon, LogInIcon, TriangleAlertIcon } from "lucide-react";
 import { FileUploader } from "./FileUploader";
 
 const Profile = () => {
   const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
-  const [files, setFiles] = useState<Record<string, string>>({});
+  //const [files, setFiles] = useState<Record<string, string>>({});
   const personalDataform = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -75,6 +69,9 @@ const Profile = () => {
   };
 
   const handleOnSubmit = async (values: z.infer<typeof profileSchema>) => {
+    console.log(values);
+    setIsLoading(true);
+    setIsLoading(false);
     // const { , dataProcessing } = values;
     // setIsLoading(true);
     // const result = await createOrUpdateConfirmations({
@@ -94,12 +91,12 @@ const Profile = () => {
     alert("Account Form submitted");
   };
 
-  const handleOnUploadComplete = (key: string, value: string) => {
-    setFiles((prev) => ({
-      ...prev,
-      [key]: value, // Add or update the key-value pair
-    }));
-  };
+  // const handleOnUploadComplete = (key: string, value: string) => {
+  //   setFiles((prev) => ({
+  //     ...prev,
+  //     [key]: value,
+  //   }));
+  // };
   return (
     <div className="my-8">
       <form onSubmit={handleAccountOnSubmit} className="space-y-4 mb">
@@ -116,7 +113,7 @@ const Profile = () => {
               Name
             </Label>
 
-            <Input type="text" defaultValue={session?.user?.name!} />
+            <Input type="text" defaultValue={session?.user?.name || ""} />
           </div>
 
           <div className="flex flex-col space-y-2">
@@ -127,7 +124,11 @@ const Profile = () => {
               Email
             </Label>
 
-            <Input type="email" disabled defaultValue={session?.user?.email!} />
+            <Input
+              type="email"
+              disabled
+              defaultValue={session?.user?.email || ""}
+            />
           </div>
         </div>
 
