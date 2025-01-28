@@ -6,7 +6,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "./ui/checkbox";
 import { z } from "zod";
-import { toast } from "sonner";
 
 import { Button } from "./ui/button";
 import {
@@ -18,7 +17,6 @@ import {
   FormMessage,
 } from "./ui/form";
 
-import { createOrUpdateConfirmations } from "@/lib/actions/profile";
 import { CONFIRMATIONS } from "@/constants";
 
 const ConfirmationsForm = (confirmations: ConfirmationsProps) => {
@@ -33,17 +31,14 @@ const ConfirmationsForm = (confirmations: ConfirmationsProps) => {
   });
 
   const handleOnSubmit = async (values: z.infer<typeof confirmationSchema>) => {
-    const { dataPrivacy, dataProcessing } = values;
+    console.log(values);
+    // const { dataPrivacy, dataProcessing } = values;
     setIsLoading(true);
-    const result = await createOrUpdateConfirmations({
-      dataPrivacy,
-      dataProcessing,
-    });
-    if (result.success) {
-      toast.success("Zustimmungen erfolgreich aktualisiert");
-    } else {
-      toast.error("Etws ist schief gelaufen");
-    }
+    // const result = await createOrUpdateConfirmations({
+    //   dataPrivacy,
+    //   dataProcessing,
+    // });
+
     setIsLoading(false);
   };
   return (
