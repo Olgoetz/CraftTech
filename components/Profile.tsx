@@ -188,6 +188,7 @@ const Profile = () => {
                       type="text"
                       {...field}
                       onChange={handleZipCodeChange}
+                      value={field.value}
                     />
                   </FormControl>
 
@@ -273,6 +274,7 @@ const Profile = () => {
             <FileUploader />
           </div>
         </div>
+        <Button disabled>Abschicken</Button>
       </div>
 
       <Separator className="mb-4 mt-8" />

@@ -5,8 +5,6 @@ import {
   text,
   primaryKey,
   integer,
-  uniqueIndex,
-  uuid,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
@@ -89,25 +87,6 @@ export const authenticators = pgTable(
       compositePK: primaryKey({
         columns: [authenticator.userId, authenticator.credentialID],
       }),
-    },
-  ]
-);
-
-export const confirmations = pgTable(
-  "confirmation",
-  {
-    id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
-    userId: text("userId")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
-    dataPrivacy: boolean("dataPrivacy").notNull(),
-    dataProcessing: boolean("dataProcessing").notNull(),
-    createdAt: timestamp("createdAt").defaultNow(),
-    updatedAt: timestamp("updatedAt").defaultNow(),
-  },
-  (table) => [
-    {
-      userIdUnique: uniqueIndex("confirmation_user_id_unique").on(table.userId),
     },
   ]
 );

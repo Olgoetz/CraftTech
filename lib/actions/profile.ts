@@ -1,17 +1,17 @@
 "use server";
 import { auth } from "@/auth";
-import { db } from "@/database/drizzle";
-import { confirmations } from "@/database/schema";
-import { eq } from "drizzle-orm";
+// import { db } from "@/database/drizzle";
+// import { eq } from "drizzle-orm";
 
 export const getConfirmations = async (userId: string) => {
-  const result = await db
-    .select()
-    .from(confirmations)
-    .where(eq(confirmations.userId, userId))
-    .limit(1);
-  console.log(result);
-  return result[0];
+  console.log(userId);
+  // const result = await db
+  //   .select()
+  //   .from(confirmations)
+  //   .where(eq(confirmations.userId, userId))
+  //   .limit(1);
+  // console.log(result);
+  return true;
 };
 
 export const createOrUpdateConfirmations = async (
@@ -25,38 +25,40 @@ export const createOrUpdateConfirmations = async (
       error: "You must be logged in to update your confirmations",
     };
 
-  const { dataPrivacy, dataProcessing } = props;
+  return;
+
+  // const { dataPrivacy, dataProcessing } = props;
 
   // const user = await db..update({
   //     where: { id: userId },
   //     data: { dataPrivacy, dataProcessing },
   // });
 
-  try {
-    await db
-      .insert(confirmations)
-      .values({
-        userId: session.user?.id as string,
-        dataPrivacy,
-        dataProcessing,
-        updatedAt: new Date(), // Update `updatedAt` on conflict
-      })
-      .onConflictDoUpdate({
-        target: confirmations.userId, // Target the unique index on `userId`
-        set: {
-          dataPrivacy,
-          dataProcessing,
-          updatedAt: new Date(), // Update the timestamp
-        },
-      });
-    return {
-      success: true,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      success: false,
-      error: "An error occurred while updating the confirmations",
-    };
-  }
+  // try {
+  //   await db
+  //     .insert(confirmations)
+  //     .values({
+  //       userId: session.user?.id as string,
+  //       dataPrivacy,
+  //       dataProcessing,
+  //       updatedAt: new Date(), // Update `updatedAt` on conflict
+  //     })
+  //     .onConflictDoUpdate({
+  //       target: confirmations.userId, // Target the unique index on `userId`
+  //       set: {
+  //         dataPrivacy,
+  //         dataProcessing,
+  //         updatedAt: new Date(), // Update the timestamp
+  //       },
+  //     });
+  //   return {
+  //     success: true,
+  //   };
+  // } catch (error) {
+  //   console.error(error);
+  //   return {
+  //     success: false,
+  //     error: "An error occurred while updating the confirmations",
+  //   };
+  // }
 };

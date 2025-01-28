@@ -1,5 +1,5 @@
 {
-  "id": "3262b302-cd3d-4c00-86c1-0937144a4517",
+  "id": "097337ac-ae98-44f5-8b3f-2ebb4ce6fafb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -180,71 +180,52 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.confirmation": {
-      "name": "confirmation",
+    "public.profile": {
+      "name": "profile",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
         "userId": {
           "name": "userId",
           "type": "text",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true
         },
-        "dataPrivacy": {
-          "name": "dataPrivacy",
-          "type": "boolean",
+        "street": {
+          "name": "street",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "dataProcessing": {
-          "name": "dataProcessing",
-          "type": "boolean",
+        "zipCode": {
+          "name": "zipCode",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "createdAt": {
-          "name": "createdAt",
-          "type": "timestamp",
+        "city": {
+          "name": "city",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
+          "notNull": false
         },
-        "updatedAt": {
-          "name": "updatedAt",
-          "type": "timestamp",
+        "country": {
+          "name": "country",
+          "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
+          "notNull": false
+        },
+        "phone": {
+          "name": "phone",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
-      "indexes": {
-        "confirmation_user_id_unique": {
-          "name": "confirmation_user_id_unique",
-          "columns": [
-            {
-              "expression": "userId",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
-        "confirmation_userId_user_id_fk": {
-          "name": "confirmation_userId_user_id_fk",
-          "tableFrom": "confirmation",
+        "profile_userId_user_id_fk": {
+          "name": "profile_userId_user_id_fk",
+          "tableFrom": "profile",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
@@ -257,15 +238,7 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "confirmation_id_unique": {
-          "name": "confirmation_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
