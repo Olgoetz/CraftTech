@@ -93,7 +93,7 @@ export const uploadFile = async (file: File, fileType: string) => {
   logger("info", "File upload finished", preSignedURL.split("?")[0]);
 
   if (!result.ok) {
-    logger("error", "Failed to upload file", result);
+    logger("error", "Failed to upload file", await result.json());
     throw new Error("Failed to upload file");
   }
   await upsertFile({ fileName: file.name, fileType, fileUrl: preSignedURL });
