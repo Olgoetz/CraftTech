@@ -7,7 +7,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <div className="mx-auto w-full max-w-7xl">
         <Header />
 
-        <div className="max-w-[1000px] mx-auto mt-20 pb-20">{children}</div>
+        <div className="max-w-[1000px] mx-auto mt-12 pb-20">{children}</div>
       </div>
     </main>
   );

@@ -19,26 +19,64 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 
-import { useSession } from "next-auth/react";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { getCity } from "@/lib/openPlzApi";
-import { Contact2, FileIcon, LogInIcon, TriangleAlertIcon } from "lucide-react";
+import {
+  CheckCircle,
+  Contact2,
+  Download,
+  DownloadIcon,
+  FileDown,
+  FileIcon,
+  LogInIcon,
+  TriangleAlertIcon,
+} from "lucide-react";
 import { FileUploader } from "./FileUploader";
+import { upsertProfile } from "@/lib/actions/profile.actions";
+import { toast } from "sonner";
+import { User } from "next-auth";
+import { attestations } from "@/database/schema";
+import Link from "next/link";
+import { splitPresignedUrl } from "@/lib/utils";
+import { stat } from "fs";
+import { EN_FILE_TYPES } from "@/constants";
+import FileDownloadButton from "./FileDownloadButton";
+import FileDeleteButton from "./FileDeleteButton";
 
-const Profile = () => {
-  const { data: session } = useSession();
+type State = "checking" | "missingFiles" | "invalidFiles" | "checked";
+
+const state: State = "checking";
+
+const Profile = ({
+  user,
+  street,
+  zipCode,
+  city,
+  phone,
+  attestations,
+}: ProfileProps) => {
+  //const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   //const [files, setFiles] = useState<Record<string, string>>({});
+
   const personalDataform = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      zipCode: "",
-      city: "",
-      street: "",
-      phone: "",
+      zipCode: zipCode || "",
+      city: city || "",
+      street: street || "",
+      phone: phone || "",
     },
   });
+
+  // const [_businessLicense, setbusinessLicense] = useState<string | null>(
+  //   businessLicense || null
+  // );
+  // const [_insurance, setInsurence] = useState<string | null>(insurance || null);
+  // const [_financialStatement, setfinancialStatement] = useState<string | null>(
+  //   financialStatement || null
+  // );
 
   //   const accountDataform = useForm<z.infer<typeof profileSchema>>({
   //     resolver: zodResolver(profileSchema),
@@ -68,27 +106,21 @@ const Profile = () => {
     debouncedGetCity(zipCode); // Fetch city with debounce
   };
 
-  const handleOnSubmit = async (values: z.infer<typeof profileSchema>) => {
+  const handleProfileOnSubmit = async (
+    values: z.infer<typeof profileSchema>
+  ) => {
     console.log(values);
     setIsLoading(true);
-    setIsLoading(false);
-    // const { , dataProcessing } = values;
-    // setIsLoading(true);
-    // const result = await createOrUpdateConfirmations({
-    //   dataPrivacy,
-    //   dataProcessing,
-    // });
-    // if (result.success) {
-    //   toast.success("Zustimmungen erfolgreich aktualisiert");
-    // } else {
-    //   toast.error("Etws ist schief gelaufen");
-    // }
-    // setIsLoading(false);
-    alert("Form submitted");
-  };
-  const handleAccountOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert("Account Form submitted");
+
+    try {
+      await upsertProfile({ ...values, user });
+      toast.success("Profil erfolgreich gespeichert!");
+    } catch (err) {
+      console.log(err);
+      toast.error("Etwas ist schief gelaufen. Versuche es nochmal!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // const handleOnUploadComplete = (key: string, value: string) => {
@@ -99,7 +131,7 @@ const Profile = () => {
   // };
   return (
     <div className="my-8">
-      <form onSubmit={handleAccountOnSubmit} className="space-y-4 mb">
+      {/* <form onSubmit={handleAccountOnSubmit} className="space-y-4 mb">
         <div className="flex  items-center">
           <LogInIcon size={35} className="mr-4" />
           <h2 className="text-xl font-semibold">Login</h2>
@@ -113,7 +145,7 @@ const Profile = () => {
               Name
             </Label>
 
-            <Input type="text" defaultValue={session?.user?.name || ""} />
+            <Input type="text" disabled defaultValue={user?.name || ""} />
           </div>
 
           <div className="flex flex-col space-y-2">
@@ -124,11 +156,7 @@ const Profile = () => {
               Email
             </Label>
 
-            <Input
-              type="email"
-              disabled
-              defaultValue={session?.user?.email || ""}
-            />
+            <Input type="email" disabled defaultValue={user?.email || ""} />
           </div>
         </div>
 
@@ -137,18 +165,39 @@ const Profile = () => {
             {isLoading ? "Speichere..." : "Speichern"}
           </Button>
         </div>
-      </form>
-
-      <Separator className="my-4" />
+      </form> */}
 
       <Form {...personalDataform}>
         <form
-          onSubmit={personalDataform.handleSubmit(handleOnSubmit)}
+          onSubmit={personalDataform.handleSubmit(handleProfileOnSubmit)}
           className="space-y-4"
         >
           <div className="flex  items-center">
             <Contact2 size={35} className="mr-4" />
-            <h2 className="text-xl font-semibold">Kontakt</h2>
+            <h2 className="text-xl font-semibold">Profil</h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4 ">
+            <div className="flex flex-col space-y-2">
+              <Label
+                htmlFor="name"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Name
+              </Label>
+
+              <Input type="text" disabled defaultValue={user?.name || ""} />
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <Label
+                htmlFor="email"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Email
+              </Label>
+
+              <Input type="email" disabled defaultValue={user?.email || ""} />
+            </div>
           </div>
           <div className="grid md:grid-cols-3 gap-4">
             <FormField
@@ -261,20 +310,95 @@ const Profile = () => {
           <h2 className="text-xl font-semibold">Dokumente</h2>
         </div>
         <div className="grid md:grid-cols-3 justify-center items-center gap-4">
-          <div className="w-full text-center space-y-2">
-            <Label className="py-1 font-semibold">Bescheinigung 1</Label>
-            <FileUploader />
-          </div>
-          <div className="w-full text-center space-y-2">
-            <Label className="py-1 font-semibold">Bescheinigung 2</Label>
-            <FileUploader />
-          </div>
-          <div className="w-full text-center space-y-2">
-            <Label className="py-1 font-semibold">Bescheinigung 3</Label>
-            <FileUploader />
-          </div>
+          {attestations?.map((el: any) => (
+            <div
+              key={el.fileType.id}
+              className="w-full text-center space-y-2 h-[200px]"
+            >
+              <Label className="py-1 font-semibold">
+                {EN_FILE_TYPES[el.fileType.name as string]}
+              </Label>
+              <FileUploader fileType={el.fileType.name} />
+              {el.attestation ? (
+                <div className="text-sm py-2">
+                  <div className="grid grid-cols-3 w-full items-center">
+                    {/* <div className="flex justify-center items-center gap-2">
+                      <FileDownloadButton fileName={el.attestation.fileName}>
+                       <DownloadIcon size={20} className="shrink-0" />
+                        {el.attestation.fileName}
+                      </FileDownloadButton>
+                    </div> */}
+                    <div className="grid col-span-2">
+                      {el.attestation.fileName}
+                    </div>
+                    <div className="grid col-span-1">
+                      <div className="flex justify-center items-center gap-2">
+                        <FileDownloadButton
+                          fileName={el.attestation.fileName}
+                        />
+                        <FileDeleteButton fileName={el.attestation.fileName} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-sm text-red-500 py-4">
+                  Keine Datei vorhanden
+                </p>
+              )}
+            </div>
+          ))}
+
+          {/* <Label className="py-1 font-semibold">Gewerbeschein</Label>
+            <FileUploader fileName={"Business License"} />
+            {businessLicense ? (
+              <div className="text-sm py-4">
+                <Link href={businessLicense}>
+                  <div className="flex justify-center items-center gap-2">
+                    <DownloadIcon size={20} className="shrink-0" />
+                    {splitPresignedUrl(businessLicense).fileName}
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <p className="text-sm text-red-500 py-4">Keine Datei vorhanden</p>
+            )}
+          */}
+          {/* <div className="w-full text-center space-y-2">
+            <Label className="py-1 font-semibold">Berufshaftpflicht</Label>
+            <FileUploader fileName="Insurance" />
+            {insurance ? (
+              <div className="text-sm py-4">
+                <Link href={insurance}>
+                  <div className="flex justify-center items-center gap-2">
+                    <DownloadIcon size={20} className="shrink-0" />
+                    {splitPresignedUrl(insurance).fileName}
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <p className="text-sm text-red-500 py-4">Keine Datei vorhanden</p>
+            )}
+          </div> */}
+          {/* <div className="w-full text-center space-y-2">
+            <Label className="py-1 font-semibold">
+              Freistellungsbescheinigung Finanzamt
+            </Label>
+            <FileUploader fileName="FinancialStatement" />
+            {financialStatement ? (
+              <div className="text-sm py-4">
+                <Link href={financialStatement}>
+                  <div className="flex justify-center items-center gap-2">
+                    <DownloadIcon size={20} className="shrink-0" />
+                    {splitPresignedUrl(financialStatement).fileName}
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <p className="text-sm text-red-500 py-4">Keine Datei vorhanden</p>
+            )}
+          </div> */}
         </div>
-        <Button disabled>Abschicken</Button>
       </div>
 
       <Separator className="mb-4 mt-8" />
@@ -282,17 +406,44 @@ const Profile = () => {
       <div className="space-y-4">
         <div className="flex items-center ">
           <FileIcon size={35} className="mr-4" />
-          <h2 className="text-xl font-semibold">Status</h2>
+          <h2 className="text-xl font-semibold">
+            Status (
+            {
+              attestations?.filter((item) => item.attestation !== null)
+                .length as number
+            }
+            /3)
+          </h2>
         </div>
 
-        <div className="bg-destructive/15 p-4 flex rounded-md items-center gap-x-4 text-sm  text-destructive">
-          <TriangleAlertIcon size={35} className="shrink-0" />
-          <p>
-            Es müssen alle Bescheinigungen hoch geladen und gültig sein. Erst
-            dann können wir Sie für die Rechnungsstellung freigeben. Falls Sie
-            Rückfragen haben, wenden Sie sich bitte an unseren Support.
-          </p>
+        <div className="">
+          {(attestations?.filter((item) => item.attestation !== null)
+            .length as number) == 3 ? (
+            <div className="bg-green-500/15 p-4 flex rounded-md items-center gap-x-4 text-sm  text-success">
+              <CheckCircle size={35} className="shrink-0" />
+              <p>
+                Alle Bescheinigungen sind hochgeladen. Sie können jetzt für die
+                Rechnungsstellung freigeschaltet werden. Sobald Sie von uns
+                freigeschlatet wurden, werden wir Sie per E-Mail
+                benachrichtigen.
+              </p>
+            </div>
+          ) : (
+            <div className="bg-destructive/15 p-4 flex rounded-md items-center gap-x-4 text-sm  text-destructive">
+              <TriangleAlertIcon size={35} className="shrink-0" />
+              <p>
+                Es müssen alle Bescheinigungen hoch geladen und gültig sein.
+                Erst dann können wir Sie für die Rechnungsstellung freigeben.
+                Falls Sie Rückfragen haben, wenden Sie sich bitte an unseren
+                Support.
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* {state === "checking" && (
+          <p>Überprüfung der Bescheinigungen durch Fachabteilung</p>
+        )} */}
 
         {/*
         <div className="bg-green-400/15 p-4 flex rounded-md items-center gap-x-4 text-sm  text-green-400">

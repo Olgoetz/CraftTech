@@ -41,11 +41,12 @@ const Header = async () => {
           <DropdownMenuLabel>Mein Konto</DropdownMenuLabel>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild className="cursor-pointer">
             <Link href="/mein-profil">Mein Profil</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
+            className="cursor-pointer"
             onClick={async () => {
               "use server";
               await signOut();

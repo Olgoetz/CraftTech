@@ -12,6 +12,17 @@ CREATE TABLE "account" (
 	"session_state" text
 );
 --> statement-breakpoint
+CREATE TABLE "attestation" (
+	"id" text PRIMARY KEY NOT NULL,
+	"userId" text NOT NULL,
+	"fileTypeId" text NOT NULL,
+	"title" text,
+	"url" text NOT NULL,
+	"createdAt" timestamp DEFAULT now(),
+	"updatedAt" timestamp DEFAULT now(),
+	"approved" boolean DEFAULT false
+);
+--> statement-breakpoint
 CREATE TABLE "authenticator" (
 	"credentialID" text NOT NULL,
 	"userId" text NOT NULL,
@@ -29,8 +40,13 @@ CREATE TABLE "profile" (
 	"street" text,
 	"zipCode" text,
 	"city" text,
-	"country" text,
+	"country" text DEFAULT 'Deutschland',
 	"phone" text
+);
+--> statement-breakpoint
+CREATE TABLE "required_file" (
+	"id" text PRIMARY KEY NOT NULL,
+	"name" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
@@ -55,6 +71,8 @@ CREATE TABLE "verificationToken" (
 );
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "attestation" ADD CONSTRAINT "attestation_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "attestation" ADD CONSTRAINT "attestation_fileTypeId_required_file_id_fk" FOREIGN KEY ("fileTypeId") REFERENCES "public"."required_file"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "profile" ADD CONSTRAINT "profile_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;

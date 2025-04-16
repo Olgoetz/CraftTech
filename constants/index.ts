@@ -16,3 +16,9 @@ export const CONFIRMATIONS = {
   dataPrivacy: "Datenschutz",
   dataProcessing: "Datenverarbeitung",
 };
+
+export const EN_FILE_TYPES: Record<string, string> = {
+  "Business License": "Gewerbeschein",
+  Insurance: "Versicherung",
+  "Financial Statement": "Freistellungsbescheinigung",
+};

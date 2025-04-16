@@ -15,7 +15,7 @@ const chivoMono = Chivo_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Craft.tech",
+  title: "baulink",
   description: "Aufträge für Handwerker",
 };
 

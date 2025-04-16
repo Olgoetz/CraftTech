@@ -13,7 +13,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
               width={40}
               height={40}
             />
-            <h1 className="text-3xl font-semibold">Craft.tech</h1>
+            <h1 className="text-3xl font-semibold">baulink</h1>
           </div>
           <div>{children}</div>
         </div>

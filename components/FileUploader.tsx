@@ -4,6 +4,12 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
 import { LoaderIcon } from "lucide-react";
 import { Card, CardContent, CardHeader } from "./ui/card";
+import { createPresignedPutURL } from "@/lib/s3";
+import config from "@/lib/config";
+import { logger } from "@/lib/utils";
+import { uploadFile, upsertFile } from "@/lib/actions/upload.actions";
+import { toast } from "sonner";
+import { db } from "@/database/drizzle";
 
 // import { useForm } from "react-hook-form";
 
@@ -19,20 +25,29 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 //   }),
 // });
 
-export function FileUploader() {
+interface FileUploaderProps {
+  // setRemoteFileName: (fileUrl: string) => void;
+  fileType: string;
+}
+
+export function FileUploader({ fileType }: FileUploaderProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string>();
   const waitor = (ms: number) => new Promise((res) => setTimeout(res, ms));
   // const form = useForm<z.infer<typeof FormSchema>>({
   //   resolver: zodResolver(FormSchema),
   // });
+
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
     setFiles(acceptedFiles);
     const file = acceptedFiles[0];
 
-    await waitor(2000);
+    //await waitor(2000);
     setUploadedFileUrl(file.name);
+
+    // Upload to s3
+    await uploadFile(file, fileType);
     setFiles([]);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({
@@ -54,7 +69,7 @@ export function FileUploader() {
         <CardHeader>
           <Button variant={"secondary"}>Datei auswählen</Button>
         </CardHeader>
-        <CardContent>
+        {/* <CardContent>
           {uploadedFileUrl ? (
             <p className="text-sm">
               <span>{uploadedFileUrl}</span>
@@ -62,7 +77,7 @@ export function FileUploader() {
           ) : (
             <p className="text-sm text-red-500">Keine Datei vorhanden</p>
           )}
-        </CardContent>
+        </CardContent> */}
       </Card>
 
       {files.length > 0 && (

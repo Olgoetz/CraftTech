@@ -15,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,
-    sessionsTable: sessions,
+    //  sessionsTable: sessions,
     verificationTokensTable: verificationTokens,
   }),
   providers: [
@@ -25,6 +25,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       from: "no-reply@novotec-gruppe.de",
     }),
   ],
+  // callbacks: {
+  //   session({ session, user }) {
+  //     session.user.role = user.role
+  //     return session
+  //   }
+  // },
   //secret: config.env.auth.secret,
   pages: {
     signIn: "/auth/signin",

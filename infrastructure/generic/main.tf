@@ -39,5 +39,7 @@ resource "vercel_project" "crafttech" {
   vercel_authentication = {
     deployment_type = "none"
   }
+  build_command   = "npx drizzle-kit generate && npx drizzle-kit migrate && next build"
+  install_command = "npm install --legacy-peer-deps"
 
 }

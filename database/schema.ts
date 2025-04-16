@@ -5,8 +5,13 @@ import {
   text,
   primaryKey,
   integer,
+  foreignKey,
+  unique,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
+
+export const roleEnum = pgEnum("role", ["contractor", "admin"]);
 
 export const users = pgTable("user", {
   id: text("id")
@@ -16,6 +21,7 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
+  role: roleEnum("role").default("contractor"),
 });
 
 export const accounts = pgTable(
@@ -98,8 +104,44 @@ export const profiles = pgTable("profile", {
   street: text("street"),
   zipCode: text("zipCode"),
   city: text("city"),
-  country: text("country"),
+  country: text("country").default("Deutschland"),
   phone: text("phone"),
 
   // uploadedFiles: text("uploadedFiles").array(), // Store an array of file references (e.g., URLs or IDs).
+});
+
+export const attestations = pgTable(
+  "attestation",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    fileTypeId: text("fileTypeId")
+      .notNull()
+      .references(() => fileTypes.id, { onDelete: "cascade" }), // Correct foreign key reference
+    fileName: text("fileName"),
+    fileUrl: text("fileUrl").notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+    updatedAt: timestamp("updatedAt", { mode: "date" })
+      .notNull()
+      .$onUpdate(() => new Date()),
+    approved: boolean("approved").default(false),
+  },
+  (attestation) => [
+    {
+      compoundKey: primaryKey({
+        columns: [attestation.userId, attestation.fileTypeId],
+      }),
+    },
+  ]
+);
+
+export const fileTypes = pgTable("fileType", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name").notNull(), // e.g., "ID Card", "Business License", "Certificate"
 });

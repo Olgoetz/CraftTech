@@ -4,6 +4,7 @@ import { publicRoutes } from "./routes";
 
 export default auth((req) => {
   console.log("Middleware invoked for", req.nextUrl.pathname);
+  console.log(req);
   const isLoggedIn = !!req.auth;
   console.log("User isLoggedIn status: ", isLoggedIn);
 
