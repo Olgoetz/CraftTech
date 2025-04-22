@@ -313,7 +313,7 @@ const Profile = ({
           <h2 className="text-2xl font-bold">
             Status (
             {
-              attestations.filter((item) => item.attestation !== null)
+              attestations?.filter((item) => item.attestation !== null)
                 .length as number
             }
             /3)

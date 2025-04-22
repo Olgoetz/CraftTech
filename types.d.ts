@@ -28,7 +28,7 @@ export type ProfileProps = {
   zipCode?: string;
   city?: string;
   phone?: string;
-  attestations: AttestationWithFileType[];
+  attestations?: AttestationWithFileType[];
   additionalFiles?: AdditionalFile[];
 };
 
