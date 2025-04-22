@@ -141,7 +141,7 @@ const MemberArea = async () => {
         <div className="w-full mx-auto flex justify-center">
           <Link href="/mein-profil">
             <Button
-              className="mt-4 w-[300px] flex items-center justify-center bg-red-500 hover:bg-red-600 text-white"
+              className="mt-4 w-[300px] flex items-center justify-center bg-baulink-primary hover:bg-baulink-primary/50 text-white"
               size="lg"
             >
               zum Profil
