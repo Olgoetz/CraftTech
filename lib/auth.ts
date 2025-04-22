@@ -15,3 +15,11 @@ export const getAuthenticatedUserId = async (): Promise<string> => {
   }
   return session.user?.id as string;
 };
+
+export const getRole = async (): Promise<string> => {
+  const session = await auth();
+  if (!session) {
+    throw new Error("User not logged in");
+  }
+  return session.user?.role as string;
+};

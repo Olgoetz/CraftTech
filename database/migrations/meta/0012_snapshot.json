@@ -1,6 +1,6 @@
 {
-  "id": "43fbe006-af71-4ecb-a48e-295df8b880bd",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "ce9ecd5d-32a9-4da5-a84f-12c0254a281a",
+  "prevId": "f1c68ef6-dc50-4b69-bcfd-fc0f280daae7",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -182,12 +182,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
-        },
-        "fileUrl": {
-          "name": "fileUrl",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",

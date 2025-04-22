@@ -1,0 +1,1 @@
+ALTER TABLE "user" ALTER COLUMN "updatedAt" SET NOT NULL;

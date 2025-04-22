@@ -5,29 +5,92 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1739866531209,
-      "tag": "0000_serious_luminals",
+      "when": 1745246074193,
+      "tag": "0000_cold_marvel_boy",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1739869327476,
-      "tag": "0001_cuddly_tenebrous",
+      "when": 1745246223436,
+      "tag": "0001_bizarre_red_wolf",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1739887966909,
-      "tag": "0002_lazy_black_widow",
+      "when": 1745246328433,
+      "tag": "0002_fine_mantis",
       "breakpoints": true
     },
     {
       "idx": 3,
       "version": "7",
-      "when": 1741074397108,
-      "tag": "0003_ancient_frank_castle",
+      "when": 1745246454552,
+      "tag": "0003_curved_iron_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1745246553397,
+      "tag": "0004_milky_hemingway",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1745246726817,
+      "tag": "0005_violet_wallow",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1745246746773,
+      "tag": "0006_even_gwen_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1745246901766,
+      "tag": "0007_faithful_jetstream",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1745246911242,
+      "tag": "0008_redundant_paibok",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1745246928038,
+      "tag": "0009_material_the_phantom",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1745246962586,
+      "tag": "0010_next_lightspeed",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1745247031112,
+      "tag": "0011_massive_butterfly",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1745270791383,
+      "tag": "0012_worthless_nightshade",
       "breakpoints": true
     }
   ]

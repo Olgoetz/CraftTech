@@ -3,13 +3,13 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "./ui/button";
 import { LoaderIcon } from "lucide-react";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { createPresignedPutURL } from "@/lib/s3";
-import config from "@/lib/config";
-import { logger } from "@/lib/utils";
-import { uploadFile, upsertFile } from "@/lib/actions/upload.actions";
+import { Card, CardHeader } from "./ui/card";
+
+import { uploadAttestation } from "@/lib/actions/upload.actions";
 import { toast } from "sonner";
-import { db } from "@/database/drizzle";
+
+import { MAX_FILE_SIZE } from "@/constants";
+import UploadingSpinner from "./UploadingSpinner";
 
 // import { useForm } from "react-hook-form";
 
@@ -41,19 +41,25 @@ export function FileUploader({ fileType }: FileUploaderProps) {
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     // Do something with the files
     setFiles(acceptedFiles);
+
     const file = acceptedFiles[0];
 
-    //await waitor(2000);
-    setUploadedFileUrl(file.name);
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(`Datei zu groß. Maximal ${MAX_FILE_SIZE / (1024 * 1024)}MB.`);
+    } else {
+      setUploadedFileUrl(file.name);
 
-    // Upload to s3
-    await uploadFile(file, fileType);
+      // Upload to s3
+      await uploadAttestation(file, fileType);
+    }
+
     setFiles([]);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
       "text/pdf": [".pdf"],
+      "image/*": [".png", ".jpg", ".jpeg"],
     },
   });
 
@@ -66,7 +72,7 @@ export function FileUploader({ fileType }: FileUploaderProps) {
       <input {...getInputProps()} />
 
       <Card>
-        <CardHeader>
+        <CardHeader className="">
           <Button variant={"secondary"}>Datei auswählen</Button>
         </CardHeader>
         {/* <CardContent>
@@ -80,30 +86,7 @@ export function FileUploader({ fileType }: FileUploaderProps) {
         </CardContent> */}
       </Card>
 
-      {files.length > 0 && (
-        <div className="fixed bottom-10 right-10 bg-slate-100 p-6 z-50 rounded-lg space-y-2">
-          <h4 className="text-xl">Uploading</h4>
-          <div className="flex items-center  gap-3">
-            <LoaderIcon className="h-6 w-6 animate-spin" />
-            <div>
-              <p className="text-xs">{files[0].name}</p>
-            </div>
-            {/* <Button
-              type="button"
-              className="w-6 h-6 rounded-full bg-red-300 p-1"
-              onClick={(e) => {
-                if (controllerRef.current) {
-                  controllerRef.current.abort();
-                }
-
-                e.stopPropagation();
-              }}
-            >
-              <X className="h-4 w-4" />
-            </Button> */}
-          </div>
-        </div>
-      )}
+      {files.length > 0 && <UploadingSpinner fileName={files[0].name} />}
     </div>
   );
 }

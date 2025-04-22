@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
+import { MAX_FILE_SIZE } from "./constants";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: `${MAX_FILE_SIZE / (1024 * 1024)}mb`,
+    },
+  },
   images: {
     remotePatterns: [
       {

@@ -1,6 +1,6 @@
 {
-  "id": "abe0b349-69fb-4308-a653-e02923c5c12b",
-  "prevId": "62067a45-c22f-4b8d-af90-f808f00f63ad",
+  "id": "2f31175a-a6ce-454c-9a92-580c01853687",
+  "prevId": "face57bc-ce9b-43fe-8a59-eb7e3ad9b0ce",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -80,6 +80,64 @@
         "account_userId_user_id_fk": {
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.additionalFile": {
+      "name": "additionalFile",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fileName": {
+          "name": "fileName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "additionalFile_userId_user_id_fk": {
+          "name": "additionalFile_userId_user_id_fk",
+          "tableFrom": "additionalFile",
           "tableTo": "user",
           "columnsFrom": [
             "userId"
@@ -335,6 +393,19 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -440,11 +511,24 @@
         },
         "role": {
           "name": "role",
-          "type": "role",
+          "type": "roles",
           "typeSchema": "public",
           "primaryKey": false,
+          "notNull": true,
+          "default": "'user'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
           "notNull": false,
-          "default": "'contractor'"
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -496,11 +580,12 @@
     }
   },
   "enums": {
-    "public.role": {
-      "name": "role",
+    "public.roles": {
+      "name": "roles",
       "schema": "public",
       "values": [
-        "contractor",
+        "guest",
+        "user",
         "admin"
       ]
     }

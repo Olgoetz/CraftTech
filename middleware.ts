@@ -4,9 +4,10 @@ import { publicRoutes } from "./routes";
 
 export default auth((req) => {
   console.log("Middleware invoked for", req.nextUrl.pathname);
-  console.log(req);
+
   const isLoggedIn = !!req.auth;
   console.log("User isLoggedIn status: ", isLoggedIn);
+  console.log("User auth data: ", req.auth?.user);
 
   // Skip auth check for public routes
   const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
@@ -18,12 +19,24 @@ export default auth((req) => {
   if (isAuthRoute) {
     return;
   }
+
+  const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+  if (isAdminRoute && req.auth?.user?.role !== "admin") {
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin)); // Redirect non-admin users to the home page
+  }
+
   if (!isLoggedIn && req.nextUrl.pathname !== "/sign-in") {
     return NextResponse.redirect(new URL("/sign-in", req.nextUrl.origin));
   }
   if (isLoggedIn && req.nextUrl.pathname === "/sign-in") {
     return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
+
+  // Adding role-based access control for admin routes
+  // const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+  // if (isAdminRoute && req.auth?.user?.role !== "admin") {
+  //   return NextResponse.redirect(new URL("/", req.nextUrl.origin)); // Redirect non-admin users to the home page
+  // }
 });
 
 export const config = {

@@ -11,7 +11,7 @@ import {
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
-export const roleEnum = pgEnum("role", ["contractor", "admin"]);
+export const rolesEnum = pgEnum("roles", ["guest", "user", "admin"]);
 
 export const users = pgTable("user", {
   id: text("id")
@@ -21,7 +21,11 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-  role: roleEnum("role").default("contractor"),
+  role: rolesEnum().default("user").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" })
+    .notNull()
+    .$onUpdate(() => new Date()),
 });
 
 export const accounts = pgTable(
@@ -106,6 +110,10 @@ export const profiles = pgTable("profile", {
   city: text("city"),
   country: text("country").default("Deutschland"),
   phone: text("phone"),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" })
+    .notNull()
+    .$onUpdate(() => new Date()),
 
   // uploadedFiles: text("uploadedFiles").array(), // Store an array of file references (e.g., URLs or IDs).
 });
@@ -123,7 +131,7 @@ export const attestations = pgTable(
       .notNull()
       .references(() => fileTypes.id, { onDelete: "cascade" }), // Correct foreign key reference
     fileName: text("fileName"),
-    fileUrl: text("fileUrl").notNull(),
+
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
     updatedAt: timestamp("updatedAt", { mode: "date" })
       .notNull()
@@ -144,4 +152,18 @@ export const fileTypes = pgTable("fileType", {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(), // e.g., "ID Card", "Business License", "Certificate"
+});
+
+export const additionalFiles = pgTable("additionalFile", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  fileName: text("fileName").notNull(),
+  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow(),
+  updatedAt: timestamp("updatedAt", { mode: "date" })
+    .notNull()
+    .$onUpdate(() => new Date()),
 });

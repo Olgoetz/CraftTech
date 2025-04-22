@@ -3,40 +3,47 @@ import { auth } from "@/auth";
 
 import Profile from "@/components/Profile";
 import { getProfile } from "@/lib/actions/profile.actions";
-import { User } from "next-auth";
-import { getAttestations, renderFile } from "@/lib/actions/upload.actions";
+import { User } from "@/types";
+import {
+  getAdditionalFiles,
+  getAttestations,
+} from "@/lib/actions/upload.actions";
 
 const Page = async () => {
   // Load profile data
   const session = await auth();
-  const rawProfile = await getProfile(session?.user?.id as string);
+  const user = session?.user as User;
+  const userId = user.id as string;
 
-  // const confirmations = await getConfirmations(user.id as string);
-  // const { dataPrivacy, dataProcessing } = confirmations;
+  const [rawProfile, attestations, additionalFiles] = await Promise.all([
+    getProfile(userId),
+    getAttestations(),
+    getAdditionalFiles(),
+  ]);
+  console.log(attestations);
+
   const profile = {
-    userId: session?.user?.id as string,
+    userId,
     street: rawProfile?.street || undefined,
     zipCode: rawProfile?.zipCode || undefined,
     city: rawProfile?.city || undefined,
     phone: rawProfile?.phone || undefined,
   };
 
-  const attestations = await getAttestations();
-  console.log("Found");
-  console.log(attestations);
-
   return (
     <main>
       <h1 className="text-4xl font-bold">Mein Profil</h1>
       <Profile
-        user={session?.user as User}
-        street={profile?.street}
-        zipCode={profile?.zipCode}
-        city={profile?.city}
-        phone={profile?.phone}
+        user={user}
+        street={profile.street}
+        zipCode={profile.zipCode}
+        city={profile.city}
+        phone={profile.phone}
         attestations={attestations}
+        additionalFiles={additionalFiles}
       />
     </main>
   );
 };
+
 export default Page;

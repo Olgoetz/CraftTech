@@ -17,6 +17,8 @@ export const CONFIRMATIONS = {
   dataProcessing: "Datenverarbeitung",
 };
 
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 export const EN_FILE_TYPES: Record<string, string> = {
   "Business License": "Gewerbeschein",
   Insurance: "Versicherung",

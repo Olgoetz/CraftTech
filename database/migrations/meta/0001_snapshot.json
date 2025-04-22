@@ -1,6 +1,6 @@
 {
-  "id": "28fd58bb-3446-4417-857a-c62d70184d34",
-  "prevId": "c81190b3-ca4c-4f4a-85e1-b324b1d2e3e7",
+  "id": "3b04a6b2-e702-424f-aec3-842b718d1c24",
+  "prevId": "43fbe006-af71-4ecb-a48e-295df8b880bd",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -97,6 +97,64 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.additionalFile": {
+      "name": "additionalFile",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fileName": {
+          "name": "fileName",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "additionalFile_userId_user_id_fk": {
+          "name": "additionalFile_userId_user_id_fk",
+          "tableFrom": "additionalFile",
+          "tableTo": "user",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.attestation": {
       "name": "attestation",
       "schema": "",
@@ -142,8 +200,7 @@
           "name": "updatedAt",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "default": "now()"
+          "notNull": true
         },
         "approved": {
           "name": "approved",
@@ -336,6 +393,19 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
@@ -438,6 +508,14 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "roles",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'user'"
         }
       },
       "indexes": {},
@@ -488,7 +566,17 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.roles": {
+      "name": "roles",
+      "schema": "public",
+      "values": [
+        "guest",
+        "user",
+        "admin"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

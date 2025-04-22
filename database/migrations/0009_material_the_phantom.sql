@@ -1,0 +1,1 @@
+ALTER TABLE "profile" ALTER COLUMN "updatedAt" DROP NOT NULL;

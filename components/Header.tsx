@@ -13,11 +13,13 @@ import {
 import { auth } from "@/auth";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { redirect } from "next/navigation";
+import { Session } from "next-auth";
 
-const Header = async () => {
-  const session = await auth();
-  if (!session) redirect("/sign-in");
+interface HeaderProps {
+  session: Session | null;
+}
 
+const Header = async ({ session }: HeaderProps) => {
   return (
     <header className="my-10 flex items-center justify-between gap-5">
       <Link href="/">
@@ -45,6 +47,14 @@ const Header = async () => {
             <Link href="/mein-profil">Mein Profil</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          {session?.user?.role === "admin" && (
+            <>
+              <DropdownMenuItem asChild className="cursor-pointer text-red-500">
+                <Link href="/admin/dashboard">Admin</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem
             className="cursor-pointer"
             onClick={async () => {
