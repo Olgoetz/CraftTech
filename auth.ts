@@ -34,12 +34,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       profile(profile) {
         return { role: profile.role ?? "user", ...profile };
       },
+      allowDangerousEmailAccountLinking: true,
     }),
     Facebook,
     Resend({
       from: "no-reply@novotec-gruppe.de",
     }),
   ],
+
   callbacks: {
     session({ session, user }) {
       session.user.role = user.role;
