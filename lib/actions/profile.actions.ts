@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
 import { attestations, profiles, users } from "@/database/schema";
+import { ProfileProps } from "@/types";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
